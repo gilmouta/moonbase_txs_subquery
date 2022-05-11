@@ -25,6 +25,9 @@
     "@subql/cli": "latest",
     "moonbeam-types-bundle": "^2.0.3"
   },
+  "resolutions": {
+    "ipfs-unixfs": "6.0.6"
+  },
   "exports": {
     "chaintypes": "src/chaintypes.ts"
   }
