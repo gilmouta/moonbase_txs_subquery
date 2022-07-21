@@ -13,7 +13,7 @@ network:
     file: ./dist/chaintypes.js
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 1950000
+    startBlock: 2522000
     mapping:
       file: ./dist/index.js
       handlers:
@@ -22,3 +22,8 @@ dataSources:
           filter:
             module: balances
             method: Transfer
+        - handler: handleProxyAnnounced
+          kind: substrate/EventHandler
+          filter:
+            module: proxy
+            method: Announced

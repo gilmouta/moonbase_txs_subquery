@@ -1,6 +1,7 @@
 import { SubstrateEvent } from '@subql/types';
 import { Account } from '../types/models/Account';
 import { Transfer } from '../types/models/Transfer';
+import { ProxyAnnounced } from '../types/models/ProxyAnnounced';
 import { Balance } from '@polkadot/types/interfaces';
 
 async function ensureAccounts(accountIds: string[]): Promise<void> {
@@ -29,4 +30,24 @@ export async function handleTransfer(event: SubstrateEvent): Promise<void> {
     //const roundInfo = (await api.query.parachainStaking.round()) as any;
     //transferInfo.round = roundInfo.current.toNumber();
     await transferInfo.save();
+}
+
+export async function handleProxyAnnounced(event: SubstrateEvent): Promise<void> {
+    const [real, delegate, call_hash] = event.event.data.toJSON() as [string, string, string]
+    
+    // Add accounts to index
+    await ensureAccounts([real, delegate]);
+
+    // Create proxyAnnounce event in index
+    const proxyAnnounced = new ProxyAnnounced(
+        `${event.block.block.header.number.toNumber()}-${event.idx}`,
+    );
+    // Set event data
+    proxyAnnounced.realId = real;
+    proxyAnnounced.delegateId = delegate;
+    proxyAnnounced.call_hash = (call_hash as string);
+    proxyAnnounced.blockNum = event.block.block.header.number.toNumber();
+
+    // Save entity with event data
+    await proxyAnnounced.save();
 }
