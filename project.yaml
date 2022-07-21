@@ -17,11 +17,11 @@ dataSources:
     mapping:
       file: ./dist/index.js
       handlers:
-        - handler: handleTransfer
-          kind: substrate/EventHandler
-          filter:
-            module: balances
-            method: Transfer
+        # - handler: handleTransfer
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: balances
+        #     method: Transfer
         - handler: handleProxyAnnounced
           kind: substrate/EventHandler
           filter:
